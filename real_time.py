@@ -24,8 +24,8 @@ while True:
             for hand_landmarks in result.multi_hand_landmarks:
                 print(hand_landmarks)
                 mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-        cv2.imshow("imagem capturada em tempo real", frame)
-        if cv2.waitKey(10) == ord('q'):
+        cv2.imshow("OpenCV Feed", frame)
+        if cv2.waitKey(10) & 0xFF == ord('q'):
             break
 
 cv2.destroyAllWindows()
