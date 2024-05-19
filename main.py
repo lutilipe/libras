@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import tensorflow as tf
 
 # Captura de vídeo
 video_cap = cv2.VideoCapture(0)
@@ -16,14 +17,18 @@ hand = mp_hands.Hands(static_image_mode=False)
 
 def format_landmarks(landmarks):
   formatted_landmarks = []
-  for hands_landmarks in landmarks:
-    hand_landmarks = []
-    for landmark in hands_landmarks:
-      hand_landmarks.append([landmark.x, landmark.y, landmark.z])
-  formatted_landmarks.append(np.concatenate(hand_landmarks))
+  for landmark in landmarks:
+    formatted_landmarks.append([landmark.x, landmark.y, landmark.z])
 
   return np.concatenate(formatted_landmarks)
 
+sequence = []
+sentence = []
+predictions = []
+threshold = 0.5
+actions = ["oi", "bom dia"]
+
+model = tf.keras.models.load_model('libras_model.h5')
 
 # Lendo as imagens de fato
 while True:
@@ -33,12 +38,21 @@ while True:
         RGB_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         result = hand.process(RGB_frame)
         if result.multi_hand_landmarks:
-            formatted_landmarks = []
-            print(result.multi_hand_landmarks)
+            keypoints = []
             for hand_landmarks in result.multi_hand_landmarks:
-                formatted_landmarks.append([hand_landmarks.x, hand_landmarks.y, hand_landmarks.z])
+                keypoints.append(format_landmarks(hand_landmarks.landmark))
                 mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-            printf(o)
+            sequence.append(np.concatenate(keypoints))
+            sequence = sequence[-30:]
+
+        # Logica de predicao
+        if len(sequence) == 30:
+            print(sequence)
+            print(np.array([sequence]).shape)
+            result = model.predict(np.array([sequence]))
+            category = actions[np.argmax(result[0])]
+            print(category)
+
         cv2.imshow("imagem capturada em tempo real", frame)
         if cv2.waitKey(10) == ord('q'):
             break
