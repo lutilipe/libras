@@ -1,3 +1,4 @@
+import time
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -25,7 +26,7 @@ sequence = []
 sentence = []
 predictions = []
 threshold = 0.5
-actions = ["oi", "bom dia"] 
+actions = ["amarelo", "aproveitar", "acontecer", "aluno", "america"] 
 
 model = tf.keras.models.load_model('libras_model.h5')
 
@@ -39,6 +40,7 @@ while True:
         # Converter de BGR para RGB
         RGB_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         result = hand.process(RGB_frame)
+        time.sleep(0.1)
         if result.multi_hand_landmarks:
             for hand_landmarks in result.multi_hand_landmarks:
                 formatted_landmarks = format_landmarks(hand_landmarks.landmark)
