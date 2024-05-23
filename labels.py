@@ -16,7 +16,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hand = mp_hands.Hands(static_image_mode=False)
 
-colors = [(245,117,16), (117,245,16), (16,117,245), (16,117,245), (16,117,245)]
+colors = [(245,117,16), (117,245,16), (16,117,245), (16,117,245), (16,117,245), (16,117,245), (16,117,245), (16,117,245), (16,117,245), (16,117,245), (16,117,245), (16,117,245)]
 def prob_viz(res, actions, input_frame, colors):
     output_frame = input_frame.copy()
     for num, prob in enumerate(res):
@@ -36,7 +36,7 @@ sequence = []
 sentence = []
 predictions = []
 threshold = 0.8
-actions = ['aproveitar', 'america' , 'amarelo', 'aluno', 'acontecer']
+actions = ['acontecer', 'amarelo', 'aproveitar', 'bala', 'banco', 'banheiro', 'barulho', 'conhecer', 'espelho', 'esquina']
 
 model = tf.keras.models.load_model('libras_model.h5')
 
