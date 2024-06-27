@@ -36,11 +36,11 @@ sequence = []
 sentence = []
 predictions = []
 threshold = 0.8
-actions = ['acontecer', 'amarelo', 'aproveitar', 'bala', 'banco', 'banheiro', 'barulho', 'conhecer', 'espelho', 'esquina']
+actions = ['acontecer', 'amarelo', 'aproveitar',  'banco', 'banheiro', 'barulho', 'conhecer', 'esquina']
 
-model = tf.keras.models.load_model('libras_model.h5')
+model = tf.keras.models.load_model('libras.h5')
 
-frame_rate = 10
+frame_rate = 30
 prev = 0
 
 # Print model input shape for verification
@@ -73,7 +73,7 @@ while True:
                     print("Unexpected number of keypoints detected.")
                 
         # Logica de predicao
-        if len(sequence) == 30:
+        if len(sequence) == 20:
             #print(sequence)
             #print(np.array([sequence]).shape)
             result = model.predict(np.array([sequence]))[0]
